@@ -5,22 +5,24 @@ namespace Business.Test
 {
     public class ClassesTest
     {
-        private readonly ContaBancaria _contaBancaria;
-
-        public ClassesTest()
-        {
-            _contaBancaria = new ContaBancaria();
-        }
 
         [Fact]
-        public void Constructor() 
+        public void Construtor() 
         {
+            ContaBancaria _contaBancaria = new ContaBancaria();
             Assert.NotNull(_contaBancaria);
+
+            Assert.Equal(_contaBancaria.banco, null);
+            Assert.Equal(_contaBancaria.agencia, 0);
+            Assert.Equal(_contaBancaria.numero, 0);
+            Assert.Equal(_contaBancaria.tipo, null);
         }
 
         [Fact]
-        public void Properties() 
+        public void Propriedades() 
         {
+            ContaBancaria _contaBancaria = new ContaBancaria();
+
             _contaBancaria.banco = "BB";
             _contaBancaria.agencia = 1000;
             _contaBancaria.numero = 123456;
@@ -30,6 +32,17 @@ namespace Business.Test
             Assert.Equal(_contaBancaria.agencia, 1000);
             Assert.Equal(_contaBancaria.numero, 123456);
             Assert.Equal(_contaBancaria.tipo, TipoConta.Poupanca);
+        }
+
+        [Fact]
+        public void ConstrutorComArgumentos() 
+        {
+            ContaBancaria _contaBancaria = new ContaBancaria("Caixa", 2000, 1111111, TipoConta.Corrente);
+
+            Assert.Equal(_contaBancaria.banco, "Caixa");
+            Assert.Equal(_contaBancaria.agencia, 2000);
+            Assert.Equal(_contaBancaria.numero, 1111111);
+            Assert.Equal(_contaBancaria.tipo, TipoConta.Corrente);
         }
     
     }
