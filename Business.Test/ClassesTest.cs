@@ -3,7 +3,7 @@ using Business;
 
 namespace Business.Test
 {
-    public class ClassesTest
+    public class ContaBancariaTest
     {
 
         [Fact]
@@ -60,5 +60,34 @@ namespace Business.Test
             Assert.Equal(550.00, saldo);
         }
 
+    }
+
+    public class LoggerTest
+    {
+
+        [Fact]
+        public void WithoutLogs() 
+        {
+            Logger _logger = new Logger();
+            Assert.Equal("", _logger.Show());
+        }
+
+        [Fact]
+        public void OneLog() 
+        {
+            Logger _logger = new Logger();
+            _logger.Debug("Message 1");
+            Assert.Equal("Debug: Message 1\n", _logger.Show());
+        }
+
+        [Fact]
+        public void SeveralLogs() 
+        {
+            Logger _logger = new Logger();
+            _logger.Debug("Message 1");
+            _logger.Debug("Message 2");
+            _logger.Debug("Message 3");
+            Assert.Equal("Debug: Message 1\nDebug: Message 2\nDebug: Message 3\n", _logger.Show());
+        }
     }
 }
