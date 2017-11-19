@@ -37,7 +37,13 @@ namespace Business.Test
         [Fact]
         public void ConstrutorComArgumentos() 
         {
-            ContaBancaria _contaBancaria = new ContaBancaria("Caixa", 2000, 1111111, TipoConta.Corrente);
+            ContaBancaria _contaBancaria = new ContaBancaria()
+            {
+                Banco = "Caixa",
+                Agencia = 2000,
+                Numero = 1111111,
+                Tipo = TipoConta.Corrente
+            };
 
             Assert.Equal("Caixa", _contaBancaria.Banco);
             Assert.Equal(2000, _contaBancaria.Agencia);
@@ -48,7 +54,13 @@ namespace Business.Test
         [Fact]
         public void MetodosPublicos() 
         {
-            ContaBancaria _contaBancaria = new ContaBancaria("Caixa", 2000, 1111111, TipoConta.Corrente);
+            ContaBancaria _contaBancaria = new ContaBancaria()
+            {
+                Banco = "Caixa",
+                Agencia = 2000,
+                Numero = 1111111,
+                Tipo = TipoConta.Corrente
+            };
 
             double saldo = _contaBancaria.Depositar(100.00);
             Assert.Equal(100.00, saldo);
