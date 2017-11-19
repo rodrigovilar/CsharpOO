@@ -16,6 +16,8 @@ namespace Business.Test
             Assert.Equal(0, _contaBancaria.Agencia);
             Assert.Equal(0, _contaBancaria.Numero);
             Assert.Equal(null, _contaBancaria.Tipo);
+
+            Assert.Equal("Debug: Conta bancária criada\n", _contaBancaria.Logger.Show());
         }
 
         [Fact]
@@ -32,6 +34,9 @@ namespace Business.Test
             Assert.Equal(1000, _contaBancaria.Agencia);
             Assert.Equal(123456, _contaBancaria.Numero);
             Assert.Equal(TipoConta.Poupanca, _contaBancaria.Tipo);
+
+            Assert.Equal("Debug: Conta bancária criada\n" +
+                         "Debug: Banco definido para BB\n", _contaBancaria.Logger.Show());
         }
 
         [Fact]
@@ -49,6 +54,9 @@ namespace Business.Test
             Assert.Equal(2000, _contaBancaria.Agencia);
             Assert.Equal(1111111, _contaBancaria.Numero);
             Assert.Equal(TipoConta.Corrente, _contaBancaria.Tipo);
+
+            Assert.Equal("Debug: Conta bancária criada\n" +
+                         "Debug: Banco definido para Caixa\n", _contaBancaria.Logger.Show());
         }
     
         [Fact]
