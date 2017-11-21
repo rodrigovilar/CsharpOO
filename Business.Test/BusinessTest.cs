@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 using Business;
 
@@ -63,6 +64,20 @@ namespace Business.Test
             saldo = _contaBancaria2.Sacar(50.00);
             Assert.Equal(550.00, saldo);
         }
+
+        [Fact]
+        public void SaqueSemSaldo() 
+        {
+            Assert.Throws<Exception>(() => _contaBancaria2.Sacar(50.00));
+        }
+
+        [Fact]
+        public void SaqueSaldoInsuficiente() 
+        {
+            _contaBancaria2.Depositar(100.00);
+            Assert.Throws<Exception>(() => _contaBancaria2.Sacar(200.00));
+        }
+        
 
         private void verificarContaBancaria(string bancoEsperado, int agenciaEsperada, int numeroEsperado, 
             TipoConta? tipoEsperado, ContaBancaria contaBancariaTestada)

@@ -3,6 +3,7 @@ using Support;
 
 namespace Business
 {
+    
     public enum TipoConta { Poupanca, Corrente, Investimento };
 
     public class ContaBancaria
@@ -39,6 +40,11 @@ namespace Business
 
         public double Sacar(double valor)
         {
+            if (saldo < valor)
+            {
+                throw new Exception("Saldo menor que valor a sacar");
+            }
+            
             saldo -= valor;
             return saldo;
         }
