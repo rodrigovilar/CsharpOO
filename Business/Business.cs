@@ -54,22 +54,22 @@ namespace Business
 
         public void Debug(string message)
         {
-            logs.Add(new Log(LogType.Debug, message)); // Duplicado
+            AddLog(LogType.Debug, message);
         }
 
         public void Error(string message)
         {
-            logs.Add(new Log(LogType.Error, message)); // Duplicado
+            AddLog(LogType.Error, message);
+        }
+
+        private void AddLog(LogType type, string message) 
+        {
+            logs.Add(new Log(type, message));
         }
 
         public string Show()
         {
-            string result = ""; // Duplicado
-            foreach (Log log in logs)
-            {
-                result = result + log.Type + ": " + log.Message + "\n";                
-            }
-            return result;
+            return MountShow(this.logs);
         }
 
         public string Show(LogType type)
@@ -78,8 +78,13 @@ namespace Business
                  where log.Type == type
                  select log;
 
-            string result = ""; // Duplicado
-            foreach (Log log in subset)
+            return MountShow(subset);
+        }
+
+        private string MountShow(IEnumerable<Log> logsToShow)
+        {
+            string result = "";
+            foreach (Log log in logsToShow)
             {
                 result = result + log.Type + ": " + log.Message + "\n";                
             }
