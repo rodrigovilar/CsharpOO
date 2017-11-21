@@ -109,5 +109,17 @@ namespace Business.Test
             _logger.Debug("Message 3");
             Assert.Equal("Debug: Message 1\nDebug: Message 2\nDebug: Message 3\n", _logger.Show());
         }
+
+        [Fact]
+        public void SeveralLogTypes() 
+        {
+            Logger _logger = new Logger();
+            _logger.Debug("Message 1");
+            _logger.Error("Message 2");
+            _logger.Debug("Message 3");
+            Assert.Equal("Debug: Message 1\nError: Message 2\nDebug: Message 3\n", _logger.Show());
+            Assert.Equal("Error: Message 2\n", _logger.Show(LogType.Error));
+            Assert.Equal("Debug: Message 1\nDebug: Message 3\n", _logger.Show(LogType.Debug));
+        }
     }
 }

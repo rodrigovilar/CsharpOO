@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Business
 {
@@ -45,32 +46,54 @@ namespace Business
 
     }
 
+    public enum LogType { Debug, Error };
+
     public class Logger
     {
         private List<Log> logs = new List<Log>();
 
         public void Debug(string message)
         {
-            logs.Add(new Log("Debug", message));
+            logs.Add(new Log(LogType.Debug, message)); // Duplicado
+        }
+
+        public void Error(string message)
+        {
+            logs.Add(new Log(LogType.Error, message)); // Duplicado
         }
 
         public string Show()
         {
-            string result = "";
+            string result = ""; // Duplicado
             foreach (Log log in logs)
             {
                 result = result + log.Type + ": " + log.Message + "\n";                
             }
             return result;
         }
+
+        public string Show(LogType type)
+        {
+            var subset = from log in this.logs
+                 where log.Type == type
+                 select log;
+
+            string result = ""; // Duplicado
+            foreach (Log log in subset)
+            {
+                result = result + log.Type + ": " + log.Message + "\n";                
+            }
+            return result;
+        }
+
     }
 
     public class Log
     {
-        public string Type { get; }
+        public LogType Type { get; }
         public string Message { get; }
 
-        public Log (string type, string message) 
+        public Log (LogType type, string message) 
         {
             this.Type = type;
             this.Message = message;
