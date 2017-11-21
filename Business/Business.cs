@@ -3,6 +3,16 @@ using Support;
 
 namespace Business
 {
+    [System.Serializable]
+    public class BusinessException : System.Exception
+    {
+        public BusinessException() { }
+        public BusinessException(string message) : base(message) { }
+        public BusinessException(string message, System.Exception inner) : base(message, inner) { }
+        protected BusinessException(
+            System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
     
     public enum TipoConta { Poupanca, Corrente, Investimento };
 
@@ -43,7 +53,7 @@ namespace Business
             if (saldo < valor)
             {
                 this.Logger.Error($"Saldo insuficiente (R$ {saldo}) para sacar R$ {valor}"); 
-                throw new Exception("Saldo menor que valor a sacar");
+                throw new BusinessException("Saldo menor que valor a sacar");
             }
 
             saldo -= valor;

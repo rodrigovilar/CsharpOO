@@ -69,7 +69,7 @@ namespace Business.Test
         [Fact]
         public void SaqueSemSaldo() 
         {
-            Assert.Throws<Exception>(() => _contaBancaria2.Sacar(50.00));
+            Assert.Throws<BusinessException>(() => _contaBancaria2.Sacar(50.00));
             // TODO formatar moeda
             Assert.Equal("Error: Saldo insuficiente (R$ 0) para sacar R$ 50\n", 
                 _contaBancaria2.Logger.Show(LogType.Error));
@@ -79,7 +79,7 @@ namespace Business.Test
         public void SaqueSaldoInsuficiente() 
         {
             _contaBancaria2.Depositar(100.00);
-            Assert.Throws<Exception>(() => _contaBancaria2.Sacar(200.00));
+            Assert.Throws<BusinessException>(() => _contaBancaria2.Sacar(200.00));
             Assert.Equal("Error: Saldo insuficiente (R$ 100) para sacar R$ 200\n", 
                 _contaBancaria2.Logger.Show(LogType.Error));
         }
