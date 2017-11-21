@@ -42,9 +42,10 @@ namespace Business
         {
             if (saldo < valor)
             {
+                this.Logger.Error($"Saldo insuficiente (R$ {saldo}) para sacar R$ {valor}"); 
                 throw new Exception("Saldo menor que valor a sacar");
             }
-            
+
             saldo -= valor;
             return saldo;
         }
