@@ -14,13 +14,54 @@ namespace Business
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     
+    public class Banco
+    {
+        public string Nome { get; set; } = "";
+        public int Numero { get; set; } = 0;
+        public double Faturamento { get; set; } = 0.0;
+
+        public override string ToString()
+        {
+            return $"{Nome}({Numero})";
+        }
+
+        public override bool Equals(object obj)
+        {
+            // Elimina nulos e tipos diferentes
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            
+            Banco banco = obj as Banco; // Cast
+
+            // Comparacao de atributos
+            if (banco.Nome == null) 
+            {
+                if (this.Nome != null) return false;
+            } else {
+                if (this.Nome != banco.Nome) return false;
+            }
+
+            if (this.Numero != banco.Numero) return false;
+
+            return true;
+        }
+        
+        public override int GetHashCode()
+        {
+            string nome = (this.Nome == null) ? "" : this.Nome;
+            return this.Nome.GetHashCode() * (this.Numero + 1024);
+        }
+    }
+
     public enum TipoConta { Poupanca, Corrente, Investimento };
 
     public class ContaBancaria
     {
-        private string banco = null;
+        private Banco banco = null;
 
-        public string Banco 
+        public Banco Banco 
         { 
             get { return this.banco; }
             set 
@@ -60,5 +101,9 @@ namespace Business
             return saldo;
         }
 
+        public override string ToString() 
+        {
+            return $"{this.Tipo} {this.banco} {this.Agencia}/{this.Numero}";
+        }
     }
 }
