@@ -1,6 +1,6 @@
 namespace Zoo
 {
-    public class Animal
+    public abstract class Animal
     {
         public int Idade { get; set; }
         public string Nome { get; set; }
@@ -10,11 +10,13 @@ namespace Zoo
             return $"{Nome}: respirando...";
         }
 
+        public abstract string FazerBarulho();
+
     }
 
     public class Gato : Animal
     {
-        public string Miar() {
+        public override string FazerBarulho() {
             return $"{Nome}: Miau! Eu tenho {Idade} anos!";
         }
     }
@@ -23,7 +25,7 @@ namespace Zoo
     {
         public string Raca { get; set; }
 
-        public string Latir() {
+        public override string FazerBarulho() {
             return $"{Nome}: Au! Eu sou um {Raca} e tenho {Idade} anos!";
         }
     }

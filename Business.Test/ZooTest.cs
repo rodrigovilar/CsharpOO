@@ -9,13 +9,11 @@ namespace Business.Test
         [Fact]
         public void AnimaisRespirandoFalando()
         {
-
-            
             Assert.Equal("Gato de Botas: respirando...", ZooTestHelper.gato.Respirar());
-            Assert.Equal("Gato de Botas: Miau! Eu tenho 3 anos!", ZooTestHelper.gato.Miar());
+            Assert.Equal("Gato de Botas: Miau! Eu tenho 3 anos!", ZooTestHelper.gato.FazerBarulho());
 
             Assert.Equal("Rex: respirando...", ZooTestHelper.cachorro.Respirar());
-            Assert.Equal("Rex: Au! Eu sou um Labrador e tenho 5 anos!", ZooTestHelper.cachorro.Latir());
+            Assert.Equal("Rex: Au! Eu sou um Labrador e tenho 5 anos!", ZooTestHelper.cachorro.FazerBarulho());
         }
 
         [Fact]
@@ -32,9 +30,16 @@ namespace Business.Test
             animais.Add(ZooTestHelper.gato);
             animais.Add(ZooTestHelper.cachorro);
 
+            Assert.Equal("Gato de Botas: respirando...", animais[0].Respirar());
+            Assert.Equal("Gato de Botas: Miau! Eu tenho 3 anos!", animais[0].FazerBarulho());
+
+            Assert.Equal("Rex: respirando...", animais[1].Respirar());
+            Assert.Equal("Rex: Au! Eu sou um Labrador e tenho 5 anos!", animais[1].FazerBarulho());
+
             foreach (Animal animal in animais)
             {
                 animal.Respirar();
+                animal.FazerBarulho(); // Chamada polimorfica
             }
         }
     }
