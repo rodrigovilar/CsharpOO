@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Support;
 
 namespace Business
@@ -30,28 +31,17 @@ namespace Business
 
         public string RelatorioFinanceiro()
         {
+            StringBuilder linhasAgencias = new StringBuilder();
             double saldoTotal = 0;
-            string linhasAgencias = "";
             foreach (Agencia agencia in agencias)
             {
-                double saldoParcial = 0;
-
-                string linhasContas = "";
-                foreach (ContaBancaria conta in agencia.ContasBancarias)
-                {
-                    double saldo = conta.Saldo;
-                    linhasContas = linhasContas + $"    Conta {conta.Tipo} {conta.Numero} - Saldo: R$ {saldo}\n";
-                    saldoParcial += saldo;
-                }
-
-                string linhaAgencia = $"  Agencia {agencia.Numero} - Saldo parcial: R$ {saldoParcial}\n";
-                linhasAgencias = linhasAgencias + linhaAgencia + linhasContas;
+                double saldoParcial = agencia.RelatorioFinanceiro(linhasAgencias);
                 saldoTotal += saldoParcial;
             }
 
             string linhaBanco = $"Banco {ToString()} - Saldo total: R$ {saldoTotal}\n";
 
-            return linhaBanco + linhasAgencias;
+            return linhaBanco + linhasAgencias.ToString();
         }
 
         public override string ToString()
@@ -91,7 +81,7 @@ namespace Business
 
     public class Agencia
     {
-        public List<ContaBancaria> ContasBancarias { get; } = new List<ContaBancaria>();
+        private List<ContaBancaria> contasBancarias = new List<ContaBancaria>();
 
         private Banco banco;
         
@@ -110,7 +100,24 @@ namespace Business
 
         internal void AddContaBancaria(ContaBancaria contaBancaria)
         {
-            ContasBancarias.Add(contaBancaria);
+            contasBancarias.Add(contaBancaria);
+        }
+
+        internal double RelatorioFinanceiro(StringBuilder linhasAgencias)
+        {
+            double saldoParcial = 0;
+
+            StringBuilder linhasContas = new StringBuilder();
+            foreach (ContaBancaria conta in contasBancarias)
+            {
+                double saldo = conta.RelatorioFinanceiro(linhasContas);
+                saldoParcial += saldo;
+            }
+
+            string linhaAgencia = $"  Agencia {Numero} - Saldo parcial: R$ {saldoParcial}\n";
+            linhasAgencias.Append(linhaAgencia + linhasContas.ToString());
+
+            return saldoParcial;
         }
 
         public override string ToString()
@@ -171,11 +178,6 @@ namespace Business
         public TipoConta? Tipo { get; set; } = null;
         public Logger Logger { get; } = new Logger();
 
-        public double Saldo 
-        { 
-            get { return this.saldo; }
-        }
-
         public ContaBancaria() 
         {
             this.Logger.Debug($"Conta bancária criada");
@@ -196,6 +198,12 @@ namespace Business
             }
 
             saldo -= valor;
+            return saldo;
+        }
+
+        internal double RelatorioFinanceiro(StringBuilder linhasContas)
+        {
+            linhasContas.Append($"    Conta {Tipo} {Numero} - Saldo: R$ {saldo}\n");
             return saldo;
         }
 
