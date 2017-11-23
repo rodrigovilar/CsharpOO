@@ -178,6 +178,43 @@ namespace Business.Test
         }
     }
 
+    public class VendaTest
+    {
+        [Fact]
+        public void RelatorioFinanceiroBanco() 
+        {
+            Venda venda = new Venda();
+
+            Produto iphone = new Produto()
+            {
+                Nome = "iPhone",
+                Valorunitario = 5000
+            };
+            Produto hb20 = new Produto()
+            {
+                Nome = "HB 20",
+                Valorunitario = 55000
+            };
+
+            ItemVenda item1 = new ItemVenda()
+            {
+                Venda = venda,
+                Produto = iphone,
+                Quantidade = 3
+            };
+
+            ItemVenda item2 = new ItemVenda()
+            {
+                Venda = venda,
+                Produto = hb20,
+                Quantidade = 1
+            };
+
+            Assert.Equal(70000, venda.ValorTotal());
+        }
+
+    }
+
     public class BancoTestHelper
     {
         public static Banco BancoVazio { get; } = new Banco();

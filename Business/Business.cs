@@ -212,4 +212,25 @@ namespace Business
             return $"{this.Tipo} {this.Agencia}/{this.Numero}";
         }
     }
+
+    public class Venda
+    {
+        public double ValorTotal()
+        {
+            return 0;
+        }
+    }
+
+    public class ItemVenda
+    {
+        public Venda Venda { get; set; }
+        public Produto Produto { get; set; }
+        public double Quantidade { get; set; }
+    }
+
+    public class Produto
+    {
+        public string Nome { get; set; }
+        public double Valorunitario { get; set; }
+    }
 }
