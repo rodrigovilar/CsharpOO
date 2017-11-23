@@ -55,23 +55,64 @@ namespace Business
         }
     }
 
+    public class Agencia
+    {
+        public Banco Banco { get; set; }
+        public int Numero { get; set; } = 0;
+        public int DigitoVerificador { get; set; } = 0;
+
+        public override string ToString()
+        {
+            return $"{Banco} {Numero}-{DigitoVerificador}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            // Elimina nulos e tipos diferentes
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            
+            Agencia agencia = obj as Agencia; // Cast
+
+            // Comparacao de atributos
+            if (agencia.Banco == null) 
+            {
+                if (this.Banco != null) return false;
+            } else {
+                if (!this.Banco.Equals(agencia.Banco)) return false;
+            }
+
+            if (this.Numero != agencia.Numero) return false;
+
+            if (this.DigitoVerificador != agencia.DigitoVerificador) return false;
+
+            return true;
+        }
+        
+        public override int GetHashCode()
+        {
+            return (this.Numero + (this.DigitoVerificador * 1024)) * 8 + this.Banco.GetHashCode();
+        }
+    }
+
     public enum TipoConta { Poupanca, Corrente, Investimento };
 
     public class ContaBancaria
     {
-        private Banco banco = null;
+        private Agencia agencia = null;
 
-        public Banco Banco 
+        public Agencia Agencia 
         { 
-            get { return this.banco; }
+            get { return this.agencia; }
             set 
             { 
-                this.banco = value;
-                this.Logger.Debug($"Banco definido para {value}"); 
+                this.agencia = value;
+                this.Logger.Debug($"Agencia definida para {agencia}"); 
             }
         }
 
-        public int Agencia { get; set; } = 0;
         public int Numero { get; set; } = 0;
         public TipoConta? Tipo { get; set; } = null;
         public Logger Logger { get; } = new Logger();
@@ -103,7 +144,7 @@ namespace Business
 
         public override string ToString() 
         {
-            return $"{this.Tipo} {this.banco} {this.Agencia}/{this.Numero}";
+            return $"{this.Tipo} {this.Agencia}/{this.Numero}";
         }
     }
 }
