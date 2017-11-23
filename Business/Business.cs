@@ -183,6 +183,10 @@ namespace Business
             this.Logger.Debug($"Conta bancária criada");
         }
 
+        public static int QuantidadeSaquesNegados() {
+            return 0;
+        }
+
         public double Depositar(double valor)
         {
             saldo += valor;

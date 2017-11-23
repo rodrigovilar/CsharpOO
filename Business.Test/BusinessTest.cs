@@ -106,63 +106,13 @@ namespace Business.Test
         [Fact]
         public void RelatorioFinanceiroBanco() 
         {
-            Banco banco = new Banco()
-            {
-                Nome = "Itau",
-                Numero = 341
-            };
-
-            Agencia agencia1 = new Agencia()
-            {
-                Banco = banco,
-                Numero = 1,
-                DigitoVerificador = 1
-            };
-            Agencia agencia2 = new Agencia()
-            {
-                Banco = banco,
-                Numero = 2,
-                DigitoVerificador = 2
-            };
-            Agencia agencia3 = new Agencia()
-            {
-                Banco = banco,
-                Numero = 3,
-                DigitoVerificador = 3
-            };
-
-            ContaBancaria contaBancariaCorrente21 = new ContaBancaria()
-            {
-                Agencia = agencia2,
-                Numero = 21,
-                Tipo = TipoConta.Corrente
-            };
-            ContaBancaria contaBancariaCorrente31 = new ContaBancaria()
-            {
-                Agencia = agencia3,
-                Numero = 31,
-                Tipo = TipoConta.Corrente
-            };
-            ContaBancaria contaBancariaCorrente32 = new ContaBancaria()
-            {
-                Agencia = agencia3,
-                Numero = 32,
-                Tipo = TipoConta.Poupanca
-            };
-            ContaBancaria contaBancariaCorrente33 = new ContaBancaria()
-            {
-                Agencia = agencia3,
-                Numero = 33,
-                Tipo = TipoConta.Corrente
-            };
-
-            contaBancariaCorrente21.Depositar(100); // 100
-            contaBancariaCorrente32.Depositar(500);
-            contaBancariaCorrente32.Depositar(450); // 950
-            contaBancariaCorrente33.Depositar(50);
-            contaBancariaCorrente33.Depositar(1000);
-            contaBancariaCorrente33.Sacar(300);
-            contaBancariaCorrente33.Depositar(500); //1250
+            ContaBancariaTestHelper.ContaBancariaCorrente_21.Depositar(100); // 100
+            ContaBancariaTestHelper.ContaBancariaCorrente_32.Depositar(500);
+            ContaBancariaTestHelper.ContaBancariaCorrente_32.Depositar(450); // 950
+            ContaBancariaTestHelper.ContaBancariaCorrente_33.Depositar(50);
+            ContaBancariaTestHelper.ContaBancariaCorrente_33.Depositar(1000);
+            ContaBancariaTestHelper.ContaBancariaCorrente_33.Sacar(300);
+            ContaBancariaTestHelper.ContaBancariaCorrente_33.Depositar(500); //1250
 
             Assert.Equal(
                 "Banco Itau(341) - Saldo total: R$ 2300\n" +
@@ -173,8 +123,19 @@ namespace Business.Test
                 "    Conta Corrente 31 - Saldo: R$ 0\n" +
                 "    Conta Poupanca 32 - Saldo: R$ 950\n" +
                 "    Conta Corrente 33 - Saldo: R$ 1250\n",
-                banco.RelatorioFinanceiro()
+                BancoTestHelper.BancoItau.RelatorioFinanceiro()
             );
+        }
+
+        [Fact]
+        public void QuantidadeSaquesNegados() 
+        {
+            Assert.Throws<BusinessException>(() => ContaBancariaTestHelper.ContaBancariaCorrente_21.Sacar(1000));
+            Assert.Throws<BusinessException>(() => ContaBancariaTestHelper.ContaBancariaCorrente_32.Sacar(1000));
+            Assert.Throws<BusinessException>(() => ContaBancariaTestHelper.ContaBancariaCorrente_33.Sacar(3000));
+            Assert.Throws<BusinessException>(() => ContaBancariaTestHelper.ContaBancariaCorrente_33.Sacar(3000));
+            Assert.Throws<BusinessException>(() => ContaBancariaTestHelper.ContaBancariaCorrente1.Sacar(5000));
+            Assert.Equal(5, ContaBancaria.QuantidadeSaquesNegados());
         }
     }
 
@@ -193,6 +154,11 @@ namespace Business.Test
             Numero = 104,
             Faturamento = 1000000000.0
         };
+        public static Banco BancoItau = new Banco()
+            {
+                Nome = "Itau",
+                Numero = 341
+            };
 
     }
 
@@ -211,7 +177,24 @@ namespace Business.Test
             Numero = 1000,
             DigitoVerificador = 9
         };
-
+        public static Agencia Agencia_1 = new Agencia()
+        {
+            Banco = BancoTestHelper.BancoItau,
+            Numero = 1,
+            DigitoVerificador = 1
+        };
+        public static Agencia Agencia_2 = new Agencia()
+        {
+            Banco = BancoTestHelper.BancoItau,
+            Numero = 2,
+            DigitoVerificador = 2
+        };
+        public static Agencia Agencia_3 = new Agencia()
+        {
+            Banco = BancoTestHelper.BancoItau,
+            Numero = 3,
+            DigitoVerificador = 3
+        };
     }
 
     public class ContaBancariaTestHelper
@@ -229,6 +212,30 @@ namespace Business.Test
             Agencia = AgenciaTestHelper.Agencia2,
             Numero = 1111111,
             Tipo = TipoConta.Poupanca
+        };
+        public static ContaBancaria ContaBancariaCorrente_21 = new ContaBancaria()
+        {
+            Agencia = AgenciaTestHelper.Agencia_2,
+            Numero = 21,
+            Tipo = TipoConta.Corrente
+        };
+        public static ContaBancaria ContaBancariaCorrente_31 = new ContaBancaria()
+        {
+            Agencia = AgenciaTestHelper.Agencia_3,
+            Numero = 31,
+            Tipo = TipoConta.Corrente
+        };
+        public static ContaBancaria ContaBancariaCorrente_32 = new ContaBancaria()
+        {
+            Agencia = AgenciaTestHelper.Agencia_3,
+            Numero = 32,
+            Tipo = TipoConta.Poupanca
+        };
+        public static ContaBancaria ContaBancariaCorrente_33 = new ContaBancaria()
+        {
+            Agencia = AgenciaTestHelper.Agencia_3,
+            Numero = 33,
+            Tipo = TipoConta.Corrente
         };
 
         public static void verificarContaBancaria(Agencia agenciaEsperada, int numeroEsperado, 
