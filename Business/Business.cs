@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Support;
 
 namespace Business
@@ -16,9 +17,42 @@ namespace Business
     
     public class Banco
     {
+        private List<Agencia> agencias = new List<Agencia>();
+
         public string Nome { get; set; } = "";
         public int Numero { get; set; } = 0;
         public double Faturamento { get; set; } = 0.0;
+        
+        internal void AddAgencia(Agencia agencia)
+        {
+            agencias.Add(agencia);
+        }
+
+        public string RelatorioFinanceiro()
+        {
+            double saldoTotal = 0;
+            string linhasAgencias = "";
+            foreach (Agencia agencia in agencias)
+            {
+                double saldoParcial = 0;
+
+                string linhasContas = "";
+                foreach (ContaBancaria conta in agencia.ContasBancarias)
+                {
+                    double saldo = conta.Saldo;
+                    linhasContas = linhasContas + $"    Conta {conta.Tipo} {conta.Numero} - Saldo: R$ {saldo}\n";
+                    saldoParcial += saldo;
+                }
+
+                string linhaAgencia = $"  Agencia {agencia.Numero} - Saldo parcial: R$ {saldoParcial}\n";
+                linhasAgencias = linhasAgencias + linhaAgencia + linhasContas;
+                saldoTotal += saldoParcial;
+            }
+
+            string linhaBanco = $"Banco {ToString()} - Saldo total: R$ {saldoTotal}\n";
+
+            return linhaBanco + linhasAgencias;
+        }
 
         public override string ToString()
         {
@@ -57,9 +91,27 @@ namespace Business
 
     public class Agencia
     {
-        public Banco Banco { get; set; }
+        public List<ContaBancaria> ContasBancarias { get; } = new List<ContaBancaria>();
+
+        private Banco banco;
+        
+        public Banco Banco
+        { 
+            get { return this.banco; }
+            set 
+            { 
+                this.banco = value;
+                this.banco.AddAgencia(this);
+            }
+        }
+
         public int Numero { get; set; } = 0;
         public int DigitoVerificador { get; set; } = 0;
+
+        internal void AddContaBancaria(ContaBancaria contaBancaria)
+        {
+            ContasBancarias.Add(contaBancaria);
+        }
 
         public override string ToString()
         {
@@ -102,6 +154,7 @@ namespace Business
     public class ContaBancaria
     {
         private Agencia agencia = null;
+        private double saldo = 0.0;
 
         public Agencia Agencia 
         { 
@@ -109,6 +162,7 @@ namespace Business
             set 
             { 
                 this.agencia = value;
+                this.agencia.AddContaBancaria(this);
                 this.Logger.Debug($"Agencia definida para {agencia}"); 
             }
         }
@@ -117,7 +171,10 @@ namespace Business
         public TipoConta? Tipo { get; set; } = null;
         public Logger Logger { get; } = new Logger();
 
-        private double saldo = 0.0;
+        public double Saldo 
+        { 
+            get { return this.saldo; }
+        }
 
         public ContaBancaria() 
         {

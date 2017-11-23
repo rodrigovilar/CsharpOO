@@ -102,6 +102,80 @@ namespace Business.Test
             Assert.Equal(" /0", ContaBancariaTestHelper.ContaBancariaVazia1.ToString());
             Assert.Equal("Corrente BB(1) 1234-5/123456", ContaBancariaTestHelper.ContaBancariaCorrente1.ToString());
         }
+
+        [Fact]
+        public void RelatorioFinanceiroBanco() 
+        {
+            Banco banco = new Banco()
+            {
+                Nome = "Itau",
+                Numero = 341
+            };
+
+            Agencia agencia1 = new Agencia()
+            {
+                Banco = banco,
+                Numero = 1,
+                DigitoVerificador = 1
+            };
+            Agencia agencia2 = new Agencia()
+            {
+                Banco = banco,
+                Numero = 2,
+                DigitoVerificador = 2
+            };
+            Agencia agencia3 = new Agencia()
+            {
+                Banco = banco,
+                Numero = 3,
+                DigitoVerificador = 3
+            };
+
+            ContaBancaria contaBancariaCorrente21 = new ContaBancaria()
+            {
+                Agencia = agencia2,
+                Numero = 21,
+                Tipo = TipoConta.Corrente
+            };
+            ContaBancaria contaBancariaCorrente31 = new ContaBancaria()
+            {
+                Agencia = agencia3,
+                Numero = 31,
+                Tipo = TipoConta.Corrente
+            };
+            ContaBancaria contaBancariaCorrente32 = new ContaBancaria()
+            {
+                Agencia = agencia3,
+                Numero = 32,
+                Tipo = TipoConta.Poupanca
+            };
+            ContaBancaria contaBancariaCorrente33 = new ContaBancaria()
+            {
+                Agencia = agencia3,
+                Numero = 33,
+                Tipo = TipoConta.Corrente
+            };
+
+            contaBancariaCorrente21.Depositar(100); // 100
+            contaBancariaCorrente32.Depositar(500);
+            contaBancariaCorrente32.Depositar(450); // 950
+            contaBancariaCorrente33.Depositar(50);
+            contaBancariaCorrente33.Depositar(1000);
+            contaBancariaCorrente33.Sacar(300);
+            contaBancariaCorrente33.Depositar(500); //1250
+
+            Assert.Equal(
+                "Banco Itau(341) - Saldo total: R$ 2300\n" +
+                "  Agencia 1 - Saldo parcial: R$ 0\n" +
+                "  Agencia 2 - Saldo parcial: R$ 100\n" +
+                "    Conta Corrente 21 - Saldo: R$ 100\n" +
+                "  Agencia 3 - Saldo parcial: R$ 2200\n" +
+                "    Conta Corrente 31 - Saldo: R$ 0\n" +
+                "    Conta Poupanca 32 - Saldo: R$ 950\n" +
+                "    Conta Corrente 33 - Saldo: R$ 1250\n",
+                banco.RelatorioFinanceiro()
+            );
+        }
     }
 
     public class BancoTestHelper
