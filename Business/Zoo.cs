@@ -5,7 +5,7 @@ namespace Zoo
         public int Idade { get; set; }
         public string Nome { get; set; }
 
-        public string Respirar()
+        public virtual string Respirar()
         {
             return $"{Nome}: respirando...";
         }
@@ -19,6 +19,7 @@ namespace Zoo
         public override string FazerBarulho() {
             return $"{Nome}: Miau! Eu tenho {Idade} anos!";
         }
+
     }
 
     public class Cachorro : Animal
