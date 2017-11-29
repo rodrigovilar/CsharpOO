@@ -9,7 +9,7 @@ namespace Aeroporto
         public string Cpf { get; set; }
     }
 
-    public class Agente : InteressadoEmTeclado
+    public class Agente
     {
         public Agente()
         {
@@ -28,18 +28,13 @@ namespace Aeroporto
         }
         public double Salario { get; set; }
 
-        void InteressadoEmTeclado.TecladoPlugado(bool plugado)
+        public void TecladoPlugado(bool plugado)
         {
             if (plugado) {
                 Console.WriteLine("Prestando atenção no teclado");
             } else {
                 Console.WriteLine("Descansando");
             }
-        }
-
-        void InteressadoEmTeclado.TeclasPressionada(string teclas)
-        {
-            throw new NotImplementedException();
         }
     }
 

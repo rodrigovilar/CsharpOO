@@ -68,7 +68,7 @@ namespace Business.Test
         {
             Teclado teclado = new Teclado();
             Agente agente = new Agente();
-            teclado.Interessados.Add(agente);
+            teclado.Handlers += agente.TecladoPlugado;
             teclado.AvisarTecladoPlugado();
         }
     }

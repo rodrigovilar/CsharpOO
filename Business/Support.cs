@@ -63,20 +63,15 @@ namespace Support
 
     }
 
-    public interface InteressadoEmTeclado {
-
-        void TecladoPlugado(bool plugado);
-        void TeclasPressionada(string teclas);
-    }
+    public delegate void TecladoPlugado(bool plugado);
 
     public class Teclado
     {
-        public List<InteressadoEmTeclado> Interessados { get; } = new List<InteressadoEmTeclado>();
+
+        public TecladoPlugado Handlers { get; set; }
 
         public void AvisarTecladoPlugado() {
-            foreach (InteressadoEmTeclado interessado in Interessados) {
-                interessado.TecladoPlugado(true);
-            }
+            Handlers(true);
         }
     }
 }
