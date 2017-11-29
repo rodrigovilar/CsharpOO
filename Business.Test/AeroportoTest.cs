@@ -44,17 +44,15 @@ namespace Business.Test
         {
             Agente agente = new Agente() 
             {
-                Pessoa = new Pessoa()
-                {
-                    Nome = "Jose",
-                    Cpf = "00001"
-                },
+                Nome = "Jose",
+                Cpf = "00001",
                 Salario = 5000
             };
 
             Passageiro passageiro = new Passageiro() 
             {
-                Pessoa = agente.Pessoa,
+                Nome = agente.Nome,
+                Cpf = agente.Cpf,
                 Milhagem = 50000
             };
 
