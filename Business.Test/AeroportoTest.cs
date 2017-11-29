@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Xunit;
 using Aeroporto;
+using Support;
 
 namespace Business.Test
 {
@@ -60,6 +61,15 @@ namespace Business.Test
 
             passageiro.Nome = "Antonio";
             Assert.Equal("Antonio", agente.Nome);
+        }
+
+        [Fact]
+        public void Teclado()
+        {
+            Teclado teclado = new Teclado();
+            Agente agente = new Agente();
+            teclado.Interessados.Add(agente);
+            teclado.AvisarTecladoPlugado();
         }
     }
 }
