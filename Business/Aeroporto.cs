@@ -1,12 +1,20 @@
+using System.Collections.Generic;
+
 namespace Aeroporto
 {
+    public interface IPapelPessoa
+    {
+    }
+    
     public class Pessoa
     {
+        public List<IPapelPessoa> Papeis { get; set; } = new List<IPapelPessoa>();
         public string Nome { get; set; }
         public string Cpf { get; set; }
     }
 
-    public class Agente
+
+    public class Agente : IPapelPessoa
     {
         public Pessoa Pessoa { get; set; }
         public string Nome 
@@ -22,7 +30,7 @@ namespace Aeroporto
         public double Salario { get; set; }
     }
 
-    public class Tripulante
+    public class Tripulante : IPapelPessoa
     {
         public double HorasVoo { get; set; }
         public Pessoa Pessoa { get; set; }
@@ -38,7 +46,7 @@ namespace Aeroporto
         }
     }
 
-    public class Passageiro
+    public class Passageiro : IPapelPessoa
     {
         public double Milhagem { get; set; }
                 public Pessoa Pessoa { get; set; }

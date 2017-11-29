@@ -42,24 +42,30 @@ namespace Business.Test
         [Fact]
         public void Mutacao()
         {
+            Pessoa pessoa = new Pessoa()
+            {
+                Nome = "Jose",
+                Cpf = "00001"
+            };
+
             Agente agente = new Agente() 
             {
-                Pessoa = new Pessoa()
-                {
-                    Nome = "Jose",
-                    Cpf = "00001"
-                },
+                Pessoa = pessoa,
                 Salario = 5000
             };
+            pessoa.Papeis.Add(agente);
 
             Passageiro passageiro = new Passageiro() 
             {
-                Pessoa = agente.Pessoa,
+                Pessoa = pessoa,
                 Milhagem = 50000
             };
+            pessoa.Papeis.Add(passageiro);
 
             passageiro.Nome = "Antonio";
             Assert.Equal("Antonio", agente.Nome);
+
+
         }
     }
 }
