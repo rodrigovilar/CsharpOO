@@ -42,6 +42,42 @@ namespace Business.Test
                 animal.FazerBarulho(); // Chamada polimorfica
             }
         }
+
+        [Fact]
+        public void VelocidadePassaros()
+        {
+            Passaro p1 = new Passaro()
+            {
+                TipoPassaro = TipoPassaro.Europeu,
+                VelocidadeBase = 100
+            };
+            Passaro p2 = new Passaro()
+            {
+                TipoPassaro = TipoPassaro.Africano,
+                VelocidadeBase = 150,
+                FatorDeCarga = 10,
+                QuantidadeCocos = 2
+            };
+            Passaro p3 = new Passaro()
+            {
+                TipoPassaro = TipoPassaro.NorueguesAzul,
+                VelocidadeBase = 50,
+                EstaPreso = true,
+                Voltagem = 220
+            };
+            Passaro p4 = new Passaro()
+            {
+                TipoPassaro = TipoPassaro.NorueguesAzul,
+                VelocidadeBase = 50,
+                EstaPreso = false,
+                Voltagem = 220
+            };
+
+            Assert.Equal(100, p1.Velocidade);
+            Assert.Equal(130, p2.Velocidade);
+            Assert.Equal(0, p3.Velocidade);
+            Assert.Equal(100, p4.Velocidade);
+        }
     }
 
     public class ZooTestHelper
