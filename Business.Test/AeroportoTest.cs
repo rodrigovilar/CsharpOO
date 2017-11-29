@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Xunit;
 using Aeroporto;
 using Support;
+using System;
 
 namespace Business.Test
 {
@@ -68,7 +69,14 @@ namespace Business.Test
         {
             Teclado teclado = new Teclado();
             Agente agente = new Agente();
-            teclado.Handlers += agente.TecladoPlugado;
+            teclado.Handlers += plugado =>
+            {
+                if (plugado) {
+                    Console.WriteLine("Prestando atenção no teclado");
+                } else {
+                    Console.WriteLine("Descansando");
+                }
+            };
             teclado.AvisarTecladoPlugado();
         }
     }

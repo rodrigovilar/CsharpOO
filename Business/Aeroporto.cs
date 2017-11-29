@@ -28,14 +28,6 @@ namespace Aeroporto
         }
         public double Salario { get; set; }
 
-        public void TecladoPlugado(bool plugado)
-        {
-            if (plugado) {
-                Console.WriteLine("Prestando atenção no teclado");
-            } else {
-                Console.WriteLine("Descansando");
-            }
-        }
     }
 
     public class Tripulante
